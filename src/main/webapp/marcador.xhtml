@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+<body>
+	<h:form id="form">
+		<p:panelGrid columns="1" layout="grid" style="margin-top:20px">
+			<f:facet name="header">
+				<h:outputText value="Marcador" />
+			</f:facet>
+					<h:panelGrid columns="2" id="marcador">
+					<h:outputText value="#{marcadorBean.nombrep1}" />
+					<h:outputText value="#{marcadorBean.mb.player1Score}" />
+					<h:outputText value="#{marcadorBean.nombrep2}" />
+					<h:outputText value="#{marcadorBean.mb.player2Score}" />
+					<h:outputText value="Estado del partido" />
+					<br/>
+					<h:outputText value="#{marcadorBean.mb.state}" />
+					<br/>
+					
+			</h:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton value="Punto jugador 1" id="p1Btn"
+					actionListener="#{marcadorBean.scorePlayer1}"
+					styleClass="ui-priority-primary" update="marcador"/>
+				<p:commandButton value="Punto jugador 2" id="p2Btn"
+					actionListener="#{marcadorBean.scorePlayer2}"
+					styleClass="ui-priority-primary" update="marcador"/>
+					<h:commandButton value="Finalizar" id="p3Btn"
+					action="#{marcadorBean.finish}"
+					styleClass="ui-priority-primary" type="submit"/>
+					</h:panelGrid>
+		</p:panelGrid>
+	</h:form>
+</body>
+</html>

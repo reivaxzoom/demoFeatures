@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+<body>
+	<h:form id="form">
+		<p:panelGrid columns="2" layout="grid" style="margin-top:20px">
+			<f:facet name="header">
+				<h:outputText value="JMS Queue Tester" />
+			</f:facet>
+			<p:column>
+			<f:facet name="header">
+				<h:outputText value="Sender" />
+			</f:facet>
+				<p:commandButton value="startService" id="startBtn"
+					actionListener="#{senderQueueBean.startService()}"
+					styleClass="ui-priority-primary" />
+				<p:commandButton value="stopService" id="stopBtn"
+					actionListener="#{senderQueueBean.stopService()}"
+					styleClass="ui-priority-primary" />
+				<h3>Input Message</h3>
+				<h:panelGrid columns="2">  
+				<p:outputLabel for="console" value="Select Type of Message:" />
+				<p:selectOneMenu id="console" value="#{senderQueueBean.type}"
+					editable="true" style="width:125px">
+					<f:selectItem itemLabel="politics" itemValue="politics" />
+					<f:selectItem itemLabel="weather" itemValue="weather" />
+					<f:selectItem itemLabel="news" itemValue="news" />
+				</p:selectOneMenu>
+				<p:inputTextarea id="queueMessage" rows="5" cols="30" counter="displayMessage"
+					maxlength="100" counterTemplate="{0} characters remaining."
+					autoResize="false" value="#{senderQueueBean.message}" />
+				<h:outputText id="displayMessage" />
+				<br></br>
+				<p:commandButton value="Send message" id="ajax" process="@parent" 
+					actionListener="#{senderQueueBean.sendMessageQueue()}"
+					styleClass="ui-priority-primary" />
+			</h:panelGrid>
+			</p:column>
+			<p:column>
+			<f:facet name="header">
+				<h:outputText value="Browser" />
+			</f:facet>
+			<h3>Browse Message</h3>
+			<h:panelGrid columns="2"> 
+			<p:outputLabel for="console" value="Select Type of Message:" />
+			<p:selectOneMenu  value="#{senderQueueBean.browseType}"
+					editable="true" style="width:125px">
+					<f:selectItem itemLabel="politics" itemValue="politics" />
+					<f:selectItem itemLabel="weather" itemValue="weather" />
+					<f:selectItem itemLabel="news" itemValue="news" />
+				</p:selectOneMenu>
+			<p:commandButton value="Browse Queue" id="browsBtn" 
+					actionListener="#{senderQueueBean.queueBrowser()}"
+					styleClass="ui-priority-primary" update="form:terminal" />
+			<p:inputTextarea id="terminal" rows="5" cols="30" counter="displayMessage"
+					maxlength="10" counterTemplate="{0} characters remaining."
+					autoResize="false" value="#{senderQueueBean.browseResult}" />
+ 
+</h:panelGrid>
+			</p:column>
+		</p:panelGrid>
+		
+		
+		
+		
+		
+		
+		
+		
+	</h:form>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+<body>
+	<h:form id="form">
+		<p:panelGrid columns="1" layout="grid" >
+			<f:facet name="header">
+				<h:outputText value="Bienvenido" />
+			</f:facet>
+					<h:panelGrid columns="2">
+					<h:outputText value="Jugador 1" />
+					<p:inputText value="#{marcadorBean.nombrep1}" />
+					<h:outputText value="Jugador 2" />
+					<p:inputText value="#{marcadorBean.nombrep2}" />
+					<br/>
+					
+			</h:panelGrid>
+			<h:panelGrid columns="2">
+					
+					<h:commandButton action="#{marcadorBean.startGame}" value="Iniciar Partida" type="submit"   >
+<!-- 					<f:attribute  name="p1" value="#{marcadorBean.nombrep1}"/> -->
+<!-- 					<f:attribute  name="p2" value="#{marcadorBean.nombrep2}"/>  -->
+					</h:commandButton>
+					
+			</h:panelGrid>
+		</p:panelGrid>
+	</h:form>
+</body>
+</html>

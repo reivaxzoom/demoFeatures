@@ -1,0 +1,266 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>jbosseapjms</groupId>
+	<artifactId>jbosseapjms</artifactId>
+	<packaging>war</packaging>
+	<version>1.0</version>
+	<name>jbosseapjms</name>
+	<repositories>
+		<repository>
+			<id>eap</id>
+			<url>http://maven.repository.redhat.com/techpreview/all</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>eap</id>
+			<url>http://maven.repository.redhat.com/techpreview/all</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.6</maven.compiler.source>
+		<maven.compiler.target>1.6</maven.compiler.target>
+	</properties>
+	<dependencies>
+		<!-- As updates are released for EAP the version of the provided jboss-javaee-6.0 
+			jar can change. To ensure your application is compiling against the same 
+			jars that the runtime provides the <version> element below should match the 
+			installed version of EAP on the node hosting your application. To determine 
+			the version of EAP running on the node, log into an example EAP application 
+			and look in the jbosseap/logs/server.log file for the line: ... JBAS015874: 
+			JBoss EAP 6.1.1.GA (AS 7.2.1.Final-redhat-10) started ... To determine the 
+			correct value for <version>, download the maven repository zip file corresponding 
+			to the installed version of EAP from the customer service portal [1]. Unzip 
+			the file and examine the single directory under jboss-eap-*-maven-repository/org/jboss/spec/jboss-javaee-6.0 
+			[1] https://access.redhat.com/jbossnetwork/restricted/listSoftware.html?downloadType=distributions&product=appplatform&productChanged=yes" -->
+		<dependency>
+			<groupId>org.jboss.spec</groupId>
+			<artifactId>jboss-javaee-6.0</artifactId>
+			<version>3.0.2.Final-redhat-4</version>
+			<type>pom</type>
+			<scope>provided</scope>
+		</dependency>
+
+
+<dependency>
+    <groupId>com.googlecode.json-simple</groupId>
+    <artifactId>json-simple</artifactId>
+    <version>1.1</version>
+</dependency>
+
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-all</artifactId>
+			<version>5.8.0</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+			<version>5.3</version>
+		</dependency>
+		 <dependency>
+         <groupId>org.hornetq.examples.jms</groupId>
+         <artifactId>hornetq-jms-examples-common</artifactId>
+         <version>2.4.0.Final</version>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.spec.javax.jms</groupId>
+         <artifactId>jboss-jms-api_2.0_spec</artifactId>
+         <version>1.0.0.Final</version>
+      </dependency>
+  <dependency>
+			<groupId>com.rabbitmq</groupId>
+			<artifactId>amqp-client</artifactId>
+			<version>3.3.4</version>
+		</dependency>
+
+  <dependency>
+  	<groupId>com.googlecode.json-simple</groupId>
+  	<artifactId>json-simple</artifactId>
+  	<version>1.1</version>
+  </dependency>
+	</dependencies>
+		
+	<profiles>
+		<profile>
+			<!-- When built in OpenShift the 'openshift' profile will be used when 
+				invoking mvn. -->
+			<!-- Use this profile for any OpenShift specific customization your app 
+				will need. -->
+			<!-- By default that is to put the resulting archive into the 'deployments' 
+				folder. -->
+			<!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
+			<id>openshift</id>
+			<build>
+				<finalName>jbosseapjms</finalName>
+				<plugins>
+					<plugin>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>2.1.1</version>
+						<configuration>
+							<outputDirectory>deployments</outputDirectory>
+							<warName>ROOT</warName>
+						</configuration>
+					</plugin>
+				</plugins>
+				
+			</build>
+		</profile>
+		
+		
+		<profile>
+		<id> local </id>
+			<build>
+      <plugins>
+         <plugin>
+            <groupId>org.hornetq</groupId>
+            <artifactId>hornetq-maven-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>start</id>
+                  <goals>
+                     <goal>start</goal>
+                  </goals>
+                  <configuration>
+                  <!--we need to fork the server as we have system props that need set pre runtime-->
+                     <fork>true</fork>
+                     <systemProperties>
+                        <property>
+                           <name>build.directory</name>
+                           <value>${basedir}/target/</value>
+                        </property>
+                        <property>
+                          <name>com.sun.management.jmxremote</name>
+                          <value></value>
+                        </property>
+                        <property>
+                          <name>com.sun.management.jmxremote.port</name>
+                          <value>3000</value>
+                        </property>
+                        <property>
+                          <name>com.sun.management.jmxremote.ssl</name>
+                          <value>false</value>
+                        </property>
+                        <property>
+                          <name>com.sun.management.jmxremote.authenticate</name>
+                          <value>false</value>
+                        </property>
+                     </systemProperties>
+                  </configuration>
+               </execution>
+               <execution>
+                  <id>runClient</id>
+                  <goals>
+                     <goal>runClient</goal>
+                  </goals>
+                  <configuration>
+                     <clientClass>org.hornetq.jms.example.JMXExample</clientClass>
+                     <args>
+                        <param>jnp://localhost:1099</param>
+                     </args>
+                  </configuration>
+               </execution>
+               <execution>
+                  <id>stop</id>
+                  <goals>
+                     <goal>stop</goal>
+                  </goals>
+               </execution>
+            </executions>
+            <dependencies>
+               <dependency>
+                  <groupId>org.hornetq.examples.jms</groupId>
+                  <artifactId>hornetq-jms-topic-selector-example2-example</artifactId>
+                  <version>2.4.0.Final</version>
+               </dependency>
+<!--  <dependency> -->
+<!--       	<groupId>jbosseapjms</groupId> -->
+<!--       	<artifactId>jbosseapjms</artifactId> -->
+<!--       	<version>1.0</version> -->
+<!--       	<type>war</type> -->
+<!--       </dependency> -->
+               <dependency>
+                  <groupId>org.hornetq</groupId>
+                  <artifactId>hornetq-core-client</artifactId>
+                  <version>2.4.0.Final</version>
+               </dependency>
+               <dependency>
+                  <groupId>org.hornetq</groupId>
+                  <artifactId>hornetq-server</artifactId>
+                  <version>2.4.0.Final</version>
+               </dependency>
+               <dependency>
+                  <groupId>org.hornetq</groupId>
+                  <artifactId>hornetq-jms-client</artifactId>
+                  <version>2.4.0.Final</version>
+               </dependency>
+               <dependency>
+                  <groupId>org.hornetq</groupId>
+                  <artifactId>hornetq-jms-server</artifactId>
+                  <version>2.4.0.Final</version>
+               </dependency>
+               <dependency>
+                  <groupId>io.netty</groupId>
+                  <artifactId>netty-all</artifactId>
+                  <version>4.0.13.Final</version>
+               </dependency>
+               <dependency>
+                  <groupId>org.jboss.javaee</groupId>
+                  <artifactId>jboss-jms-api</artifactId>
+                  <version>1.1.0.GA</version>
+               </dependency>
+               <dependency>
+                  <groupId>org.jboss.naming</groupId>
+                  <artifactId>jnpserver</artifactId>
+                  <version>5.0.3.GA</version>
+               </dependency>
+               <dependency>
+			<groupId>com.rabbitmq</groupId>
+			<artifactId>amqp-client</artifactId>
+			<version>3.3.4</version>
+		</dependency>
+
+
+
+		
+            </dependencies>
+            <configuration>
+               <waitOnStart>false</waitOnStart>
+               <hornetqConfigurationDir>${basedir}/target/classes/hornetq/server0</hornetqConfigurationDir>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
+		
+		
+		
+		</profile>
+	</profiles>
+	
+	
+	
+
+	
+	
+	
+</project>

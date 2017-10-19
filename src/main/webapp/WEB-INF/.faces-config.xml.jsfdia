@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#marcador.jsf" PATH="/marcador.jsf"
+  SHAPE="400,144,50,25" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#bienvenida.xhtml" PATH="/bienvenida.xhtml"
+  SHAPE="112,112,50,41" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#bienvenida.xhtml:0" NAME="item"
+   PATH="/bienvenida.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{marcadorBean.startGame}:#marcador.jsf" NAME="output"
+    PATH="/marcador.jsf" TARGET="rules:#marcador.jsf"
+    TITLE="#{marcadorBean.startGame}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#marcador.xhtml" PATH="/marcador.xhtml"
+  SHAPE="288,256,50,41" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#marcador.xhtml:0" NAME="item"
+   PATH="/marcador.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="start:#{marcadorBean.finish}:#bienvenida.xhtml" NAME="output"
+    PATH="/bienvenida.xhtml" TARGET="rules:#bienvenida.xhtml"
+    TITLE="#{marcadorBean.finish}:start" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+</PROCESS>
